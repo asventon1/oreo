@@ -37,7 +37,7 @@ void setup() {
     USE_SERIAL.println();
     USE_SERIAL.println();
 
-    for(uint8_t t = 4; t > 0; t--) {
+    for(uint8_t t = 10; t > 0; t--) {
         USE_SERIAL.printf("[SETUP] WAIT %d...\n", t);
         USE_SERIAL.flush();
         delay(1000);
@@ -56,6 +56,8 @@ void setup() {
 
 void loop() {
 
+	//Serial.println(epoch);
+
     if(digitalRead(16) == 0 && lastSensor == 1) {
       rotations++;
     }
@@ -71,12 +73,12 @@ void loop() {
   
       HTTPClient http;
   
-      USE_SERIAL.print("[HTTP] begin...\n");
+      USE_SERIAL.println("[HTTP] begin...");
       // configure traged server and url
       http.begin("http://192.168.150.2:3000/postdata/"); //HTTP
       http.addHeader("Content-Type", "application/json");
   
-      USE_SERIAL.print("[HTTP] POST...\n");
+      USE_SERIAL.println("[HTTP] POST...");
       // start connection and send HTTP header and body
       int httpCode = http.POST("{\"rpm\":"+(String)rotations+", \"time\":"+(String)(epoch+((unsigned long)millis())/1000)+"}");
       rotations = 0;
